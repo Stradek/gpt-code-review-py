@@ -1,0 +1,8 @@
+# IDE configuration
+.vscode/
+
+# Virtual Environment Setup
+.venv/
+
+# AI code reviews output 
+output/
