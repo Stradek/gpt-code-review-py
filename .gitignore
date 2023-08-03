@@ -9,3 +9,6 @@ output/
 
 # Python cache
 __pycache__/
+
+# output txt file
+output.txt
