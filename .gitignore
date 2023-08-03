@@ -6,3 +6,6 @@
 
 # AI code reviews output 
 output/
+
+# Python cache
+__pycache__/

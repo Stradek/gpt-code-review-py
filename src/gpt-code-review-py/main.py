@@ -2,31 +2,19 @@ import os
 from datetime import datetime
 
 import openai
-import json
 
+from data_management import get_data_file_path, get_data_content, get_json_file
 
-def get_json_file(path):
-  text = open(path, "r").read()
-  json_file = json.loads(text)
-  return json_file
+from github_utils import get_git_pr
 
-def get_data_content(path):
-  json_file = get_json_file(path)
-  return json_file["content"]
-
-def get_data_file_path(config, file_name):
-  data_dir = config["data_directory"]
-  files = config["data_files"]
-  filepath = os.path.join(data_dir, files[file_name])
-  return filepath
+repo_url = "https://github.com/Stradek/DX12EngineTest"
+pr_id = 18
 
 def get_required_data(config):
-  pull_request_path = get_data_file_path(config, "pull_request")
   ai_review_template_path = get_data_file_path(config, "ai_review_template")
   system_prompt_path = get_data_file_path(config, "system_prompt")
 
   data = {
-    "pull_request" : f"{get_data_content(pull_request_path)}",
     "ai_review_template" : f"{get_data_content(ai_review_template_path)}",
     "system_prompt" : f"{get_data_content(system_prompt_path)}"
   }
@@ -50,7 +38,6 @@ def get_ai_code_review(openai_model, system_prompt, pull_request):
   response = completion.choices[0].message["content"]
   return response
 
-
 def main():
   root_dir = os.getcwd()
 
@@ -62,13 +49,15 @@ def main():
   ai_review_template = required_data["ai_review_template"]
   system_prompt = required_data["system_prompt"] \
     .replace("{paste_here_template}", ai_review_template)
-  pull_request = required_data["pull_request"]
+  
+  pull_request = get_git_pr(pr_id, repo_url)
 
   openai_model = config["openai_model"]
-
   ai_code_review = get_ai_code_review(openai_model, system_prompt, pull_request)
-  print(ai_code_review)
 
+  print(ai_code_review)
+  
+  # if there is no output directory - create one
   try:
     output_dir = config["output_file"].split("/")[0]
     output_dir_path = os.path.join(root_dir, output_dir)
@@ -79,6 +68,7 @@ def main():
   datetime_str = "{0:%Y}-{0:%m}-{0:%d}-{0:%H}-{0:%M}-{0:%S}".format(datetime.now())
   output_file_path = os.path.join(root_dir, config["output_file"])
   output_file_path = output_file_path.replace("{datetime}", datetime_str)
+
   with open(output_file_path, "x") as output_file:
      output_file.write(ai_code_review)
 
