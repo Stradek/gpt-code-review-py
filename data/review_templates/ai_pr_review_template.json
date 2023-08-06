@@ -1,5 +1,5 @@
 {
     "content": {
-        "template" : "## AI Review **Concerns:** [point out here concerns about PR code and explanain why it is concerning. if there are no concerns, write that there are no concerns] **Recommendations:** [point out here recommendations to PR code. if there are no recommendations, write that there are no improvements needed to PR code] **Summary** [write here short summary of PR changes with explanation of your thoughts about them] **Resolution** [PR Approved or PR Rejected]: [explanation on why PR is approved or rejected]"
+        "template" : "## AI Review **Concerns:** [point out here concerns about PR code functionality and explanain why it's' concerning. if there are no concerns, write that there are no concerns] **Recommendations:** [point out here recommendations to PR code functionality or style. if there are no recommendations, write that there are no improvements needed to PR code] **Summary** [write here short summary of PR code changes with explanation of your thoughts about them] **Resolution** [PR Approved or PR Rejected(but only if there are any concerns about functional side)]: [explanation on why PR is approved or rejected]"
     }
 }
